@@ -5,47 +5,44 @@ class ProductosController {
     this.apiProductos = new ApiProductos();
   }
 
-  getProducts = async (req, res) => {
+  getProducts = async ({ _id }) => {
     try {
-      const id = req.params.id;
-      const productos = await this.apiProductos.getProductos(id);
-      res.send(productos);
+      const productos = await this.apiProductos.getProductos(_id);
+      return productos;
     } catch (error) {
       console.log("error getProducts controller: ", error);
     }
   };
 
-  insertProduct = async (req, res) => {
+  insertProduct = async ({ title, price, thumbnail }) => {
     try {
-      let producto = req.body;
+      const producto = { title, price, thumbnail };
       let productoGuardado = await this.apiProductos.postProducto(producto);
-      res.json(productoGuardado);
+      return productoGuardado;
     } catch (error) {
       console.log("error postProduct: ", error);
     }
   };
 
-  updateProduct = async (req, res) => {
+  updateProduct = async ({ _id, title, price, thumbnail }) => {
     try {
-      let producto = req.body;
-      let idProducto = req.params.id;
+      const producto = { title, price, thumbnail };
       let productoActualizado = await this.apiProductos.actualizarProducto(
-        idProducto,
+        _id,
         producto
       );
-      res.json(productoActualizado);
+      return productoActualizado;
     } catch (error) {
       console.log("error updateProduct", error);
     }
   };
 
-  removeProduct = async (req, res) => {
+  removeProduct = async ({ _id }) => {
     try {
-      let idProducto = req.params.id;
       let productoEliminado = await this.apiProductos.eliminarProducto(
-        idProducto
+        _id
       );
-      res.json(productoEliminado);
+      return productoEliminado;
     } catch (error) {
       console.log("error removeProduct", error);
     }
